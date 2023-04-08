@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "KDWebServer": {
+      "commandName": "Project",
+      "commandLineArgs": "--debug server.cs"
+    }
+  }
+}
