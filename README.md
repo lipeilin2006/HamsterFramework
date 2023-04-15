@@ -17,7 +17,7 @@ Linux:
 ```
 ## 配置文件
 config.yaml
-```
+```YAML
 host: localhost:20000 #要监听的URL
 useHttps: false #是否使用Https
 threadCount: 4 #自定义开启的线程数
