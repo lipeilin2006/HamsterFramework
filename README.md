@@ -1,12 +1,24 @@
 <div align="center">
-# HamsterFramework
+  
+  # HamsterFramework
+  
 </div>
 
-<div style="align: center">
-<img src="https://github.com/lipeilin2006/HamsterFramework/blob/main/Hamster.jpeg"/>
-</div>
+<p align="center">
+  <img src="https://github.com/lipeilin2006/HamsterFramework/blob/main/Hamster.jpeg" width="200" height="200" alt="icon"/>
+</p>
+
+<p align="center">
+  <a href="https://raw.githubusercontent.com/lipeilin2006/HamsterFramework/main/LICENSE">
+    <img src="https://img.shields.io/github/license/lipeilin2006/HamsterFramework" alt="license">
+  </a>
+  <a href="https://github.com/lipeilin2006/HamsterFramework/releases">
+    <img src="https://img.shields.io/github/v/release/lipeilin2006/HamsterFramework?color=blueviolet&include_prereleases" alt="release">
+  </a>
+</p>
 
 <br />
+
 这是一个非常简单的C#后端框架。这个框架实现了C#脚本化。你只需要编写C#脚本，把脚本名称通过命令行参数的方式传给Hamster，无需自行编译C#代码就能直接运行。
 ## 示例
 server.cs
