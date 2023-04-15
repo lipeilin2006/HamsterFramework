@@ -23,8 +23,8 @@
 ## 示例
 server.cs（注意：这是一个脚本，无需编译。）
 ```CSharp
-server.Route("^/$", (HttpListenerRequest req) => { return new Text("Hello"); });
-server.RouteOther((HttpListenerRequest req) => { return new Text("404"); });
+server.Route("^/$", (HttpListenerRequest req) => { return new Text.Plane("Hello"); });
+server.RouteOther((HttpListenerRequest req) => { return new Text.Plane("404",404); });
 ```
 #### 运行：
 Windows:
