@@ -1,5 +1,6 @@
 # HamsterFramework
 ![avatar](https://github.com/lipeilin2006/HamsterFramework/blob/main/Hamster.jpeg)
+<br />
 这是一个非常简单的C#后端框架。这个框架实现了C#脚本化。你只需要编写C#脚本，把脚本名称通过命令行参数的方式传给Hamster，无需自行编译C#代码就能直接运行。
 ## 示例
 server.cs
