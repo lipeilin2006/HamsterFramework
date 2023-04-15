@@ -65,13 +65,13 @@ namespace Hamster.Core
 										if (Regex.Matches(context.Request.Url.LocalPath, routes[ii]).Count > 0)
 										{
 											isMatch = true;
-											funcs[ii](context.Request).Run(context);
+											Task.Run(() => { funcs[ii](context.Request).Run(context); });
 											break;
 										}
 									}
 									if (!isMatch)
 									{
-										other(context.Request).Run(context);
+										Task.Run(() => { other(context.Request).Run(context); });
 									}
 								}
 							}
