@@ -19,9 +19,9 @@
 
 <br />
 
-这是一个非常简单的C#后端框架。这个框架实现了C#脚本化。你只需要编写C#脚本，把脚本名称通过命令行参数的方式传给Hamster，无需自行编译C#代码就能直接运行。
+这是一个非常简单的C#后端框架。这个框架实现了C#脚本化。你只需要编写C#脚本，把脚本名称通过命令行参数的方式传给Hamster，无需自行编译C#代码就能直接运行。使用多线程加异步来提高处理请求的速度。
 ## 示例
-server.cs
+server.cs（注意：这是一个脚本，无需编译。）
 ```CSharp
 server.Route("^/$", (HttpListenerRequest req) => { return new Text("Hello"); });
 server.RouteOther((HttpListenerRequest req) => { return new Text("404"); });
