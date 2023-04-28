@@ -19,21 +19,98 @@
 
 <br />
 
-这是一个非常简单的C#后端框架。这个框架实现了C#脚本化。你只需要编写C#脚本，把脚本名称通过命令行参数的方式传给Hamster，无需自行编译C#代码就能直接运行。使用多线程加异步来提高处理请求的速度。
+这是一个非常简单的C#后端框架。这个框架实现了C#脚本化。你只需要编写C#脚本，无需自行编译C#代码就能直接运行。使用多线程和异步来提高处理请求的速度。可以使用Http API来管理Hamster。
 ## 示例
+server.cs和config.yaml必须放在网站根目录中。
 server.cs（注意：这是一个脚本，无需编译。）
 ```CSharp
 server.Route("^/$", (HttpListenerRequest req) => { return new Text.Plane("Hello"); });
 server.RouteOther((HttpListenerRequest req) => { return new Text.Plane("404",404); });
 ```
-#### 运行：
+#### 调试模式运行（无需初始化）：
 Windows:
 ```
-.\Hamster.exe --debug .\server.cs
+.\Hamster.exe --debug
 ```
 Linux:
 ```
-./Hamster --debug ./server.cs
+./Hamster --debug
+```
+#### 初始化Hamster：
+这会创建一个后台进程，用于统一管理所有Hamster服务。
+Windows:
+```
+.\Hamster.exe --init
+```
+Linux:
+```
+./Hamster --init
+```
+#### 启动一个Hamster服务：
+此命令会自动获取当前路径，把当前路径作为网站根目录。目录中的server.cs为服务器脚本，config.yaml为配置文件（没有则自动创建）。需name参数的值是唯一的，以便管理服务。
+Windows:
+```
+.\Hamster.exe --start --name xxx
+```
+Linux:
+```
+./Hamster --start --name xxx
+```
+HttpAPI:
+```
+http://localhost:26262/Start?path=网站根目录&name=名称
+```
+#### 重启指定名称的Hamster服务：
+Windows:
+```
+.\Hamster.exe --restart --name xxx
+```
+Linux:
+```
+./Hamster --restart --name xxx
+```
+HttpAPI:
+```
+http://localhost:26262/Restart?name=名称
+```
+#### 停止指定名称的Hamster服务：
+Windows:
+```
+.\Hamster.exe --stop --name xxx
+```
+Linux:
+```
+./Hamster --stop --name xxx
+```
+HttpAPI:
+```
+http://localhost:26262/Stop?name=名称
+```
+#### 重启所有Hamster服务：
+Windows:
+```
+.\Hamster.exe --restartall
+```
+Linux:
+```
+./Hamster --restartall
+```
+HttpAPI:
+```
+http://localhost:26262/RestartAll
+```
+#### 停止所有Hamster服务并关闭后台进程：
+Windows:
+```
+.\Hamster.exe --stopall
+```
+Linux:
+```
+./Hamster --stopall
+```
+HttpAPI:
+```
+http://localhost:26262/StopAll
 ```
 ## 配置文件
 config.yaml
@@ -54,6 +131,7 @@ namespaces: #需要使用的命名空间（等同于using）
 - System.Net
 - Hamster.Core
 - System.Threading
+- System.Text.RegularExpressions
 - MySql.Data.MySqlClient
 - Microsoft.Data.Sqlite
 - Oracle.ManagedDataAccess.Client
