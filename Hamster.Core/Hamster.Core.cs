@@ -17,7 +17,7 @@ namespace Hamster.Core
 		private bool isExit = false;
 
 		private List<string> routes = new List<string>();
-		private List<Func<HttpListenerRequest, RouteAction>> funcs = new List<Func<HttpListenerRequest, RouteAction>>();
+		private List<Func<HttpListenerRequest, MatchCollection, RouteAction>> funcs = new List<Func<HttpListenerRequest, MatchCollection, RouteAction>>();
 		private Func<HttpListenerRequest, RouteAction>? other;
 		public HttpServer()
 		{
@@ -36,7 +36,6 @@ namespace Hamster.Core
 			contexts = new Queue<HttpListenerContext>[threadCount];
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 		}
-
 		public void Start()
 		{
 			try
@@ -62,10 +61,11 @@ namespace Hamster.Core
 									bool isMatch = false;
 									for(int ii = 0; ii < routes.Count; ii++)
 									{
-										if (Regex.Matches(context.Request.Url.LocalPath, routes[ii]).Count > 0)
+										MatchCollection matches = Regex.Matches(context.Request.Url.LocalPath, routes[ii]);
+										if (matches.Count > 0)
 										{
 											isMatch = true;
-											Task.Run(() => { funcs[ii](context.Request).Run(context); });
+											Task.Run(() => { funcs[ii](context.Request,matches).Run(context); });
 											break;
 										}
 									}
@@ -116,7 +116,7 @@ namespace Hamster.Core
 			}
 		}
 
-		public void Route(string path, Func<HttpListenerRequest, RouteAction> func)
+		public void Route(string path, Func<HttpListenerRequest, MatchCollection, RouteAction> func)
 		{
 			routes.Add(path);
 			funcs.Add(func);
@@ -179,12 +179,12 @@ namespace Hamster.Core
 			this.statusCode = statusCode;
 		}
 
-		public override void Run(HttpListenerContext context)
+		public override async void Run(HttpListenerContext context)
 		{
 			context.Response.AddHeader("Content-type", contentType);
 			context.Response.ContentEncoding = Encoding.UTF8;
 			context.Response.StatusCode = statusCode;
-			context.Response.OutputStream.Write(Encoding.UTF8.GetBytes(text));
+			await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes(text));
 			context.Response.Close();
 		}
 		public class Plane : Text
@@ -229,11 +229,11 @@ namespace Hamster.Core
 			contents = File.ReadAllBytes(path);
 		}
 
-		public override void Run(HttpListenerContext context)
+		public override async void Run(HttpListenerContext context)
 		{
 			context.Response.AddHeader("Content-type", contentType);
 			context.Response.StatusCode = statusCode;
-			context.Response.OutputStream.Write(contents);
+			await context.Response.OutputStream.WriteAsync(contents);
 			context.Response.Close();
 		}
 	}
