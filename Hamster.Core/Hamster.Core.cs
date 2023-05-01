@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using MimeMapping;
 
 namespace Hamster.Core
 {
@@ -25,7 +24,6 @@ namespace Hamster.Core
 			listener = new HttpListener();
 			threads = new Thread[threadCount];
 			contexts=new Queue<HttpListenerContext>[threadCount];
-			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 		}
 		public HttpServer(string host, bool useHttps,byte threadCount)
 		{
@@ -78,26 +76,22 @@ namespace Hamster.Core
 							}
 							catch (Exception ex)
 							{
-								Console.ForegroundColor = ConsoleColor.Red;
-								Console.WriteLine("[" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "]" + ex.Message.ToString() + " while listening(0)");
-								Console.ForegroundColor = ConsoleColor.White;
+								Logger.LogError(ex.Message.ToString() + " while listening(position 0)");
 							}
 						}
 					};
 					threads[i] = new Thread(start);
 					threads[i].Start();
 				}
-				listener.Prefixes.Add((useHttps == true ? "https://" : "http://") + host + "/");
-				listener.Start();
+				listener?.Prefixes.Add((useHttps == true ? "https://" : "http://") + host + "/");
+				listener?.Start();
 				listenLoop = new Thread(Listen);
 				listenLoop.Start();
 				Console.WriteLine("Listening on " + host);
 			}
 			catch (Exception ex)
 			{
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("[" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "]" + ex.Message.ToString() + " while starting");
-				Console.ForegroundColor = ConsoleColor.White;
+				Logger.LogError(ex.Message.ToString() + " while starting");
 			}
 		}
 		public void Stop()
@@ -105,6 +99,7 @@ namespace Hamster.Core
 			try
 			{
 				Console.WriteLine("Stopping server");
+				Logger.Close();
 				isExit = true;
 				if (listener != null)
 				{
@@ -136,7 +131,7 @@ namespace Hamster.Core
 					{
 						HttpListenerContext context = listener.GetContext();
 						contexts[nextThread].Enqueue(context);
-						//Console.WriteLine("[" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "][" + context.Request.RemoteEndPoint + "]" + context.Request.Url.ToString());
+						Logger.LogDebug("[" + context.Request.RemoteEndPoint + "]" + context.Request.Url.ToString());
 						nextThread++;
 						if (nextThread >= threads.Length)
 						{
@@ -146,9 +141,7 @@ namespace Hamster.Core
 				}
 				catch (Exception ex)
 				{
-					Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine("[" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "]" + ex.Message.ToString() + " while listening(1)");
-					Console.ForegroundColor = ConsoleColor.White;
+					Logger.LogError(ex.Message.ToString() + " while listening(position 1)");
 				}
 			}
 		}

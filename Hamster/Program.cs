@@ -15,6 +15,17 @@ Dictionary<string,Global> globals = new Dictionary<string, Global>();
 HttpServer? cmdserver = null;
 bool stop = false;
 
+AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
+void CurrentDomain_ProcessExit(object? sender, EventArgs e)
+{
+	foreach(Global g in globals.Values)
+	{
+		g.server.Stop();
+	}
+}
+
+
+
 try
 {
 	Parser.Default.ParseArguments<Options>(args)
@@ -171,16 +182,22 @@ void Debug(Global global)
 			var deserializer = new DeserializerBuilder().Build();
 			server = deserializer.Deserialize<Server>(input);
 			input.Close();
+			Logger.Level = server.loglevel;
+			Logger.SetLogFile(server.logfile);
 		}
 		else
 		{
 			var serializer = new Serializer();
 			TextWriter textWriter = File.CreateText(configpath);
+			Logger.Level = LogLevel.Debug;
+			Logger.SetLogFile(Path.Combine(".", "log.txt"));
 			server = new Server()
 			{
 				host = "localhost:20000",
 				useHttps = false,
 				threadCount = 4,
+				loglevel = LogLevel.Debug,
+				logfile = Path.Combine(".", "log.txt"),
 				imports = { "Hamster.Core.dll", "MySql.Data.dll", "Microsoft.Data.Sqlite.dll", "Oracle.ManagedDataAccess.dll", "Microsoft.Data.SqlClient.dll", "Npgsql.dll", "Dapper.dll" },
 				namespaces = { "System", "System.Net", "Hamster.Core", "System.Threading", "System.Text.RegularExpressions", "MySql.Data.MySqlClient", "Microsoft.Data.Sqlite", "Oracle.ManagedDataAccess.Client", "Microsoft.Data.SqlClient", "Npgsql" }
 			};
@@ -215,12 +232,12 @@ void Debug(Global global)
 				"});");
 			scriptState = CSharpScript.RunAsync(File.ReadAllText(scriptpath), scriptOptions, global).Result;
 		}
+		globals.Add("Debug", global);
 		global.server.Start();
 			while (true)
 			{
 			Console.WriteLine("你可以在此输入并动态执行C#语句，如：使用Stop()来结束调试。");
-			Console.Write("C#>>");
-				string order = Console.ReadLine();
+			string order = Console.ReadLine();
 			if (order == "Stop()")
 			{
 				global.server.Stop();
@@ -263,16 +280,22 @@ void StartServer(Global global)
 			var deserializer = new DeserializerBuilder().Build();
 			server = deserializer.Deserialize<Server>(input);
 			input.Close();
+			Logger.Level = server.loglevel;
+			Logger.SetLogFile(server.logfile);
 		}
 		else
 		{
 			var serializer = new Serializer();
 			TextWriter textWriter = File.CreateText(configpath);
+			Logger.Level = LogLevel.Debug;
+			Logger.SetLogFile(Path.Combine(".", "log.txt"));
 			server = new Server()
 			{
 				host = "localhost:20000",
 				useHttps = false,
 				threadCount = 4,
+				loglevel = LogLevel.Debug,
+				logfile = Path.Combine(".","log.txt"),
 				imports = { "Hamster.Core.dll", "MySql.Data.dll", "Microsoft.Data.Sqlite.dll", "Oracle.ManagedDataAccess.dll", "Microsoft.Data.SqlClient.dll", "Npgsql.dll", "Dapper.dll" },
 				namespaces = { "System", "System.Net", "Hamster.Core", "System.Threading", "System.Text.RegularExpressions", "MySql.Data.MySqlClient", "Microsoft.Data.Sqlite", "Oracle.ManagedDataAccess.Client", "Microsoft.Data.SqlClient", "Npgsql" }
 			};
@@ -329,9 +352,11 @@ string Request(string url)
 
 public class Server
 {
-	public string host="localhost:5000";
+	public string host = "localhost:5000";
 	public bool useHttps;
 	public byte threadCount;
+	public LogLevel loglevel;
+	public string logfile = "";
 	public HashSet<string> imports = new HashSet<string>();
 	public HashSet<string> namespaces = new HashSet<string>();
 }
