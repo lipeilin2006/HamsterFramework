@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using MimeMapping;
 
 namespace Hamster.Core
 {
@@ -65,20 +66,20 @@ namespace Hamster.Core
 										if (matches.Count > 0)
 										{
 											isMatch = true;
-											Task.Run(() => { funcs[ii](context.Request,matches).Run(context); });
+											Task.Run(async () => { await funcs[ii](context.Request, matches).Run(context); });
 											break;
 										}
 									}
 									if (!isMatch)
 									{
-										Task.Run(() => { other(context.Request).Run(context); });
+										Task.Run(async () => { await other(context.Request).Run(context); });
 									}
 								}
 							}
 							catch (Exception ex)
 							{
 								Console.ForegroundColor = ConsoleColor.Red;
-								Console.WriteLine("[" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "]" + ex.Message.ToString() + " while listening");
+								Console.WriteLine("[" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "]" + ex.Message.ToString() + " while listening(0)");
 								Console.ForegroundColor = ConsoleColor.White;
 							}
 						}
@@ -135,7 +136,7 @@ namespace Hamster.Core
 					{
 						HttpListenerContext context = listener.GetContext();
 						contexts[nextThread].Enqueue(context);
-						Console.WriteLine("[" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "][" + context.Request.RemoteEndPoint + "]" + context.Request.Url.ToString());
+						//Console.WriteLine("[" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "][" + context.Request.RemoteEndPoint + "]" + context.Request.Url.ToString());
 						nextThread++;
 						if (nextThread >= threads.Length)
 						{
@@ -146,95 +147,15 @@ namespace Hamster.Core
 				catch (Exception ex)
 				{
 					Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine("[" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "]" + ex.Message.ToString() + " while listening");
+					Console.WriteLine("[" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "]" + ex.Message.ToString() + " while listening(1)");
 					Console.ForegroundColor = ConsoleColor.White;
 				}
 			}
 		}
 	}
-
 	public abstract class RouteAction
 	{
 		public int statusCode = 200;
-		public abstract void Run(HttpListenerContext context);
-	}
-	public class Text : RouteAction
-	{
-		public string text = "";
-		public string contentType = "";
-		public Text(string text)
-		{
-			this.text = text;
-		}
-		public Text(string text,string contentType)
-		{
-			this.text = text;
-			this.contentType = contentType;
-		}
-
-		public Text(string text, string contentType, int statusCode)
-		{
-			this.text = text;
-			this.contentType = contentType;
-			this.statusCode = statusCode;
-		}
-
-		public override async void Run(HttpListenerContext context)
-		{
-			context.Response.AddHeader("Content-type", contentType);
-			context.Response.ContentEncoding = Encoding.UTF8;
-			context.Response.StatusCode = statusCode;
-			await context.Response.OutputStream.WriteAsync(Encoding.UTF8.GetBytes(text));
-			context.Response.Close();
-		}
-		public class Plane : Text
-		{
-			public Plane(string text) : base(text, "text/plane") { }
-			public Plane(string text, int statusCode) : base(text, "text/plane", statusCode) { }
-		}
-		public class HTML : Text
-		{
-			public HTML(string text) : base(text, "text/html") { }
-			public HTML(string text, int statusCode) : base(text, "text/html", statusCode) { }
-		}
-		public class JavaScript : Text
-		{
-			public JavaScript(string text) : base(text, "text/javascript") { }
-			public JavaScript(string text, int statusCode) : base(text, "text/javascript", statusCode) { }
-		}
-		public class CSS : Text
-		{
-			public CSS(string text) : base(text, "text/css") { }
-			public CSS(string text, int statusCode) : base(text, "text/css", statusCode) { }
-		}
-	}
-	
-	public class KFile : RouteAction
-	{
-		public string contentType = "";
-		public byte[] contents;
-		public KFile(string path)
-		{
-			contents = File.ReadAllBytes(path);
-		}
-		public KFile(string path,string contentType)
-		{
-			this.contentType = contentType;
-			contents = File.ReadAllBytes(path);
-		}
-		public KFile(string path, string contentType, int statusCode)
-		{
-			this.contentType = contentType;
-			this.statusCode = statusCode;
-			contents = File.ReadAllBytes(path);
-		}
-
-		public override async void Run(HttpListenerContext context)
-		{
-			context.Response.AddHeader("Content-type", contentType);
-			context.Response.StatusCode = statusCode;
-			await context.Response.OutputStream.WriteAsync(contents);
-			context.Response.Close();
-		}
+		public abstract Task Run(HttpListenerContext context);
 	}
 }
