@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "KDWebServer": {
+    "Hamster": {
       "commandName": "Project",
       "commandLineArgs": "--debug"
     }
