@@ -10,11 +10,14 @@ using CommandLine.Text;
 using Google.Protobuf.WellKnownTypes;
 using System.Text;
 using System.Text.RegularExpressions;
+using Hamster.Core.Routing;
+using Hamster.Core.Components;
 
 Dictionary<string,Global> globals = new Dictionary<string, Global>();
 HttpServer? cmdserver = null;
 bool stop = false;
 
+//Close all server on exit.
 AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
 void CurrentDomain_ProcessExit(object? sender, EventArgs e)
 {
@@ -23,8 +26,6 @@ void CurrentDomain_ProcessExit(object? sender, EventArgs e)
 		g.server.Stop();
 	}
 }
-
-
 
 try
 {
@@ -41,7 +42,7 @@ try
 		   }
 		   else if (option.isWork)
 		   {
-			   cmdserver = new HttpServer("localhost:26262", false, 1);
+			   cmdserver = new HttpServer("localhost:26262", false);
 			   cmdserver.Route("^/Start$", (HttpListenerRequest request, MatchCollection matches) =>
 			   {
 				   string? path = request.QueryString["path"];
@@ -195,11 +196,10 @@ void Debug(Global global)
 			{
 				host = "localhost:20000",
 				useHttps = false,
-				threadCount = 4,
 				loglevel = LogLevel.Debug,
 				logfile = Path.Combine(".", "log.txt"),
 				imports = { "Hamster.Core.dll", "MySql.Data.dll", "Microsoft.Data.Sqlite.dll", "Oracle.ManagedDataAccess.dll", "Microsoft.Data.SqlClient.dll", "Npgsql.dll", "Dapper.dll" },
-				namespaces = { "System", "System.Net", "Hamster.Core", "System.Threading", "System.Text.RegularExpressions", "MySql.Data.MySqlClient", "Microsoft.Data.Sqlite", "Oracle.ManagedDataAccess.Client", "Microsoft.Data.SqlClient", "Npgsql" }
+				namespaces = { "System", "System.Net", "Hamster.Core", "Hamster.Core.Routing", "Hamster.Core.Components", "System.Threading", "System.Text.RegularExpressions", "MySql.Data.MySqlClient", "Microsoft.Data.Sqlite", "Oracle.ManagedDataAccess.Client", "Microsoft.Data.SqlClient", "Npgsql" }
 			};
 			serializer.Serialize(textWriter, server);
 			textWriter.Close();
@@ -210,7 +210,7 @@ void Debug(Global global)
 		}
 		assemblies.Add(typeof(HttpListenerContext).Assembly);
 		assemblies.Add(typeof(Regex).Assembly);
-		global.server = new HttpServer(server.host, server.useHttps, server.threadCount);
+		global.server = new HttpServer(server.host, server.useHttps);
 		ScriptOptions scriptOptions = ScriptOptions.Default
 			.AddReferences(assemblies.ToArray())
 			.WithImports(server.namespaces.ToArray());
@@ -293,11 +293,10 @@ void StartServer(Global global)
 			{
 				host = "localhost:20000",
 				useHttps = false,
-				threadCount = 4,
-				loglevel = LogLevel.Debug,
+				loglevel = LogLevel.Info,
 				logfile = Path.Combine(".","log.txt"),
 				imports = { "Hamster.Core.dll", "MySql.Data.dll", "Microsoft.Data.Sqlite.dll", "Oracle.ManagedDataAccess.dll", "Microsoft.Data.SqlClient.dll", "Npgsql.dll", "Dapper.dll" },
-				namespaces = { "System", "System.Net", "Hamster.Core", "System.Threading", "System.Text.RegularExpressions", "MySql.Data.MySqlClient", "Microsoft.Data.Sqlite", "Oracle.ManagedDataAccess.Client", "Microsoft.Data.SqlClient", "Npgsql" }
+				namespaces = { "System", "System.Net", "Hamster.Core", "Hamster.Core.Routing", "Hamster.Core.Components", "System.Threading", "System.Text.RegularExpressions", "MySql.Data.MySqlClient", "Microsoft.Data.Sqlite", "Oracle.ManagedDataAccess.Client", "Microsoft.Data.SqlClient", "Npgsql" }
 			};
 			serializer.Serialize(textWriter, server);
 			textWriter.Close();
@@ -308,7 +307,7 @@ void StartServer(Global global)
 		}
 		assemblies.Add(typeof(HttpListenerContext).Assembly);
 		assemblies.Add(typeof(Regex).Assembly);
-		global.server = new HttpServer(server.host, server.useHttps, server.threadCount);
+		global.server = new HttpServer(server.host, server.useHttps);
 		ScriptOptions scriptOptions = ScriptOptions.Default
 			.AddReferences(assemblies.ToArray())
 			.WithImports(server.namespaces.ToArray());
@@ -339,7 +338,6 @@ void StartServer(Global global)
 	}
 }
 
-
 string Request(string url)
 {
 	HttpClient client = new HttpClient();
@@ -354,7 +352,6 @@ public class Server
 {
 	public string host = "localhost:5000";
 	public bool useHttps;
-	public byte threadCount;
 	public LogLevel loglevel;
 	public string logfile = "";
 	public HashSet<string> imports = new HashSet<string>();
