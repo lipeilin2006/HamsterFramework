@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -30,29 +30,29 @@ jobs:
       
     - name: Publish_Win_x86
       shell: bash
-      run: dotnet publish Hamster -p:PublishProfile=win-x86
+      run: dotnet publish Hamster -c Release --os win-x86 -o ./publish/win-x86/
       
     - name: Publish_Win_x64
       shell: bash
-      run: dotnet publish Hamster -p:PublishProfile=win-x64
+      run: dotnet publish Hamster -c Release --os win-x64 -o ./publish/win-x64/
       
     - name: Publish_Win_arm
       shell: bash
-      run: dotnet publish Hamster -p:PublishProfile=win-arm
+      run: dotnet publish Hamster
       
     - name: Publish_Win_arm64
       shell: bash
-      run: dotnet publish Hamster -p:PublishProfile=win-arm64
+      run: dotnet publish Hamster
       
     - name: Publish_Linux_x64
       shell: bash
-      run: dotnet publish Hamster -p:PublishProfile=linux-x64
+      run: dotnet publish Hamster
       
     - name: Publish_Linux_arm
       shell: bash
-      run: dotnet publish Hamster -p:PublishProfile=linux-arm
+      run: dotnet publish Hamster
       
     - name: Publish_Linux_arm64
       shell: bash
-      run: dotnet publish Hamster -p:PublishProfile=linux-arm64
+      run: dotnet publish Hamster
     
