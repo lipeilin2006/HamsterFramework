@@ -24,3 +24,18 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Publish_Win_x86
+      run: dotnet publish -p:PublishProfile=win-x86
+    - name: Publish_Win_x64
+      run: dotnet publish -p:PublishProfile=win-x64
+    - name: Publish_Win_arm
+      run: dotnet publish -p:PublishProfile=win-arm
+    - name: Publish_Win_arm64
+      run: dotnet publish -p:PublishProfile=win-arm64
+    - name: Publish_Linux_x64
+      run: dotnet publish -p:PublishProfile=linux-x64
+    - name: Publish_Linux_arm
+      run: dotnet publish -p:PublishProfile=linux-arm
+    - name: Publish_Linux_arm64
+      run: dotnet publish -p:PublishProfile=linux-arm64
+    
