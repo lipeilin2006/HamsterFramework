@@ -36,40 +36,33 @@ jobs:
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=win-x86
-        ls
       
     - name: Publish_Win_x64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=win-x64
-        ls
       
     - name: Publish_Win_arm
       run: |
        cd Hamster
        dotnet publish -p:PublishProfile=win-arm
-       ls
       
     - name: Publish_Win_arm64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=win-arm64
-        ls
       
     - name: Publish_Linux_x64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=linux-x64
-        ls
       
     - name: Publish_Linux_arm
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=linux-arm
-        ls
       
     - name: Publish_Linux_arm64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=linux-arm64
-        ls
