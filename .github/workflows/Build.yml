@@ -91,9 +91,9 @@ jobs:
       with:
         repo_token: ${{ secrets.TOKEN }}
         file:  ./Hamster/*.zip
-        tag: $vars.VERSION
-        release_name: $vars.VERSION
+        tag: ${{ vars.VERSION }}
+        release_name: ${{ vars.VERSION }}
         overwrite: false
         file_glob: false
-        prerelease: $vars.PRERELEASE
-        body: $vars.BODY
+        prerelease: ${{ vars.PRERELEASE }}
+        body: ${{ vars.BODY }}
