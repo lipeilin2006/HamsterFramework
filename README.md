@@ -9,6 +9,9 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/lipeilin2006/HamsterFramework/actions/workflows/Test.yml">
+    <img src="https://github.com/lipeilin2006/HamsterFramework/actions/workflows/Test.yml/badge.svg" alt="test">
+  </a>
   <a href="https://raw.githubusercontent.com/lipeilin2006/HamsterFramework/main/LICENSE">
     <img src="https://img.shields.io/github/license/lipeilin2006/HamsterFramework" alt="license">
   </a>
