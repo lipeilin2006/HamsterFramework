@@ -36,33 +36,43 @@ jobs:
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=win-x86
+        zip -vr win-x86.zip bin/Release/net7.0/publish/win-x86/
       
     - name: Publish_Win_x64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=win-x64
+        zip -vr win-x64.zip bin/Release/net7.0/publish/win-x64/
       
     - name: Publish_Win_arm
       run: |
        cd Hamster
        dotnet publish -p:PublishProfile=win-arm
+       zip -vr win-arm.zip bin/Release/net7.0/publish/win-arm/
       
     - name: Publish_Win_arm64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=win-arm64
+        zip -vr win-arm64.zip bin/Release/net7.0/publish/win-arm64/
       
     - name: Publish_Linux_x64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=linux-x64
+        zip -vr linux-x64.zip bin/Release/net7.0/publish/linux-x64/
       
     - name: Publish_Linux_arm
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=linux-arm
+        zip -vr linux-arm.zip bin/Release/net7.0/publish/linux-arm/
       
     - name: Publish_Linux_arm64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=linux-arm64
+        zip -vr linux-arm64.zip bin/Release/net7.0/publish/linux-arm64/
+    
+    - name: List
+      run: ls
