@@ -17,42 +17,32 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Restore dependencies
-      shell: bash
       run: dotnet restore
       
     - name: Build
-      shell: bash
       run: dotnet build --no-restore
       
     - name: Test
-      shell: bash
       run: dotnet test --no-build --verbosity normal
       
     - name: Publish_Win_x86
-      shell: bash
-      run: dotnet publish Hamster -c Release --os win-x86 -o ./publish/win-x86/
+      run: dotnet publish Hamster -p:Configuration=Release -p:PublishDir=bin\Release\net7.0\publish\win-x86\
       
     - name: Publish_Win_x64
-      shell: bash
-      run: dotnet publish Hamster -c Release --os win-x64 -o ./publish/win-x64/
+      run: dotnet publish Hamster -c Release --os win-x64
       
     - name: Publish_Win_arm
-      shell: bash
       run: dotnet publish Hamster
       
     - name: Publish_Win_arm64
-      shell: bash
       run: dotnet publish Hamster
       
     - name: Publish_Linux_x64
-      shell: bash
       run: dotnet publish Hamster
       
     - name: Publish_Linux_arm
-      shell: bash
       run: dotnet publish Hamster
       
     - name: Publish_Linux_arm64
-      shell: bash
       run: dotnet publish Hamster
     
