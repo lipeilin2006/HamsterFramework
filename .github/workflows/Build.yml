@@ -5,6 +5,8 @@ name: Build
 
 on:
   push:
+    tags:
+      -"v*"
     branches: [ "main" ]
 
 jobs:
@@ -36,43 +38,55 @@ jobs:
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=win-x86
-        zip -vr win-x86.zip bin/Release/net7.0/publish/win-x86/
+        zip -r win-x86.zip bin/Release/net7.0/publish/win-x86/
       
     - name: Publish_Win_x64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=win-x64
-        zip -vr win-x64.zip bin/Release/net7.0/publish/win-x64/
+        zip -r win-x64.zip bin/Release/net7.0/publish/win-x64/
       
     - name: Publish_Win_arm
       run: |
        cd Hamster
        dotnet publish -p:PublishProfile=win-arm
-       zip -vr win-arm.zip bin/Release/net7.0/publish/win-arm/
+       zip -r win-arm.zip bin/Release/net7.0/publish/win-arm/
       
     - name: Publish_Win_arm64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=win-arm64
-        zip -vr win-arm64.zip bin/Release/net7.0/publish/win-arm64/
+        zip -r win-arm64.zip bin/Release/net7.0/publish/win-arm64/
       
     - name: Publish_Linux_x64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=linux-x64
-        zip -vr linux-x64.zip bin/Release/net7.0/publish/linux-x64/
+        zip -r linux-x64.zip bin/Release/net7.0/publish/linux-x64/
       
     - name: Publish_Linux_arm
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=linux-arm
-        zip -vr linux-arm.zip bin/Release/net7.0/publish/linux-arm/
+        zip -r linux-arm.zip bin/Release/net7.0/publish/linux-arm/
       
     - name: Publish_Linux_arm64
       run: |
         cd Hamster
         dotnet publish -p:PublishProfile=linux-arm64
-        zip -vr linux-arm64.zip bin/Release/net7.0/publish/linux-arm64/
+        zip -r linux-arm64.zip bin/Release/net7.0/publish/linux-arm64/
     
-    - name: List
-      run: ls
+    - name: List files
+      run: |
+        cd
+        ls
+    - name: Create release
+      uses: svenstaro/upload-release-action@2.5.0
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file:  Hamster/*.zip
+        tag: ${{ github.ref }}
+        release_name: ${{ github.ref }}
+        overwrite: true
+        file_glob: true
+        body: ""
