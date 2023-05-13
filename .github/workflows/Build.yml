@@ -27,7 +27,7 @@ jobs:
     - name: Publish_Win_x64
       run: dotnet publish Hamster -p:PublishProfile=win-x64
     - name: Publish_Win_arm
-      run: dotnet publish Hamster -p:PublishProfile=./Hamster/Properties/PublishProfiles/win-arm.pubxml
+      run: dotnet publish Hamster -p:PublishProfile=./Hamster/Properties/PublishProfiles/win-arma.pubxml
     - name: Publish_Win_arm64
       run: dotnet publish Hamster -p:PublishProfile=./Hamster/Properties/PublishProfiles/win-arm64.pubxml
     - name: Publish_Linux_x64
@@ -36,6 +36,4 @@ jobs:
       run: dotnet publish Hamster -p:PublishProfile=./Hamster/Properties/PublishProfiles/linux-arm.pubxml
     - name: Publish_Linux_arm64
       run: dotnet publish Hamster -p:PublishProfile=./Hamster/Properties/PublishProfiles/linux-arm64.pubxml
-    - name: Publish
-      run: dotnet pub
     
