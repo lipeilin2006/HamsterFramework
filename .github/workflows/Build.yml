@@ -26,7 +26,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       
     - name: Publish_Win_x86
-      run: dotnet publish Hamster/Hamster.csproj -p:Configuration=Release -p:SelfContained=true -p:PublishDir=publish/win-x86/ -p:RuntimeIdentifier=win-x86
+      run: dotnet publish Hamster -p:Configuration=Release -p:SelfContained=true -p:PublishDir=publish/win-x86/ -p:RuntimeIdentifier=win-x86
       
     - name: Publish_Win_x64
       run: dotnet publish Hamster -p:Configuration=Release -p:SelfContained=true -p:PublishDir=publish/win-x64/ -p:RuntimeIdentifier=win-x64
