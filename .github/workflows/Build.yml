@@ -5,8 +5,6 @@ name: Build
 
 on:
   push:
-    tags:
-      -"v*"
     branches: [ "main" ]
 
 jobs:
@@ -83,16 +81,16 @@ jobs:
         cd ./Hamster
         ls
         echo ${{ github.ref }}
-        echo ${{ variables.VERSION }}
-        echo ${{ variables.PRERELEASE }}
+        echo ${{ vars.VERSION }}
+        echo ${{ vars.PRERELEASE }}
     - name: Create release
       if: false
       uses: svenstaro/upload-release-action@2.5.0
       with:
         repo_token: ${{ secrets.TOKEN }}
         file:  ./Hamster/*.zip
-        tag: $VERSION
-        release_name: $VERSION
+        tag: $vars.VERSION
+        release_name: $vars.VERSION
         overwrite: true
         file_glob: true
         prerelease: $PRERELEASE
