@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -17,23 +17,42 @@ jobs:
       with:
         dotnet-version: 7.0.x
     - name: Restore dependencies
+      shell: bash
       run: dotnet restore
+      
     - name: Build
+      shell: bash
       run: dotnet build --no-restore
+      
     - name: Test
+      shell: bash
       run: dotnet test --no-build --verbosity normal
+      
     - name: Publish_Win_x86
-      run: dotnet publish Hamster -p:PublishProfile=/home/runner/work/HamsterFramework/HamsterFramework/Hamster/Properties/PublishProfiles/win-x86.pubxml
+      shell: bash
+      run: dotnet publish Hamster -p:PublishProfile=win-x86
+      
     - name: Publish_Win_x64
-      run: dotnet publish Hamster -p:PublishProfile=/home/runner/work/HamsterFramework/HamsterFramework/Hamster/Properties/PublishProfiles/win-x64.pubxml
+      shell: bash
+      run: dotnet publish Hamster -p:PublishProfile=win-x64
+      
     - name: Publish_Win_arm
-      run: dotnet publish Hamster -p:PublishProfile=./Hamster/Properties/PublishProfiles/win-arm.pubxml
+      shell: bash
+      run: dotnet publish Hamster -p:PublishProfile=win-arm
+      
     - name: Publish_Win_arm64
-      run: dotnet publish Hamster -p:PublishProfile=./Hamster/Properties/PublishProfiles/win-arm64.pubxml
+      shell: bash
+      run: dotnet publish Hamster -p:PublishProfile=win-arm64
+      
     - name: Publish_Linux_x64
-      run: dotnet publish Hamster -p:PublishProfile=./Hamster/Properties/PublishProfiles/linux-x64.pubxml
+      shell: bash
+      run: dotnet publish Hamster -p:PublishProfile=linux-x64
+      
     - name: Publish_Linux_arm
-      run: dotnet publish Hamster -p:PublishProfile=./Hamster/Properties/PublishProfiles/linux-arm.pubxml
+      shell: bash
+      run: dotnet publish Hamster -p:PublishProfile=linux-arm
+      
     - name: Publish_Linux_arm64
-      run: dotnet publish Hamster -p:PublishProfile=./Hamster/Properties/PublishProfiles/linux-arm64.pubxml
+      shell: bash
+      run: dotnet publish Hamster -p:PublishProfile=linux-arm64
     
