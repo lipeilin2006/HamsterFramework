@@ -83,15 +83,17 @@ jobs:
         echo ${{ github.ref }}
         echo ${{ vars.VERSION }}
         echo ${{ vars.PRERELEASE }}
+        echo ${{ vars.PUBLISH }}
+        echo ${{ vars.BODY }}
     - name: Create release
-      if: false
+      if: $vars.PUBLISH
       uses: svenstaro/upload-release-action@2.5.0
       with:
         repo_token: ${{ secrets.TOKEN }}
         file:  ./Hamster/*.zip
         tag: $vars.VERSION
         release_name: $vars.VERSION
-        overwrite: true
-        file_glob: true
-        prerelease: $PRERELEASE
-        body: ""
+        overwrite: false
+        file_glob: false
+        prerelease: $vars.PRERELEASE
+        body: $vars.BODY
