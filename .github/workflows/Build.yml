@@ -82,13 +82,18 @@ jobs:
       run: |
         cd ./Hamster
         ls
+        echo ${{ github.ref }}
+        echo $VERSION
+        echo $PRERELEASE
     - name: Create release
+      if: false
       uses: svenstaro/upload-release-action@2.5.0
       with:
         repo_token: ${{ secrets.TOKEN }}
         file:  ./Hamster/*.zip
-        tag: ${{ github.ref }}
-        release_name: ${{ github.ref }}
+        tag: $VERSION
+        release_name: $VERSION
         overwrite: true
         file_glob: true
+        prerelease: $PRERELEASE
         body: ""
