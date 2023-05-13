@@ -10,6 +10,7 @@
 
 <p align="center">
   [![Test](https://github.com/lipeilin2006/HamsterFramework/actions/workflows/Test.yml/badge.svg)](https://github.com/lipeilin2006/HamsterFramework/actions/workflows/Test.yml)
+  
   <a href="https://raw.githubusercontent.com/lipeilin2006/HamsterFramework/main/LICENSE">
     <img src="https://img.shields.io/github/license/lipeilin2006/HamsterFramework" alt="license">
   </a>
