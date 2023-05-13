@@ -83,8 +83,8 @@ jobs:
         cd ./Hamster
         ls
         echo ${{ github.ref }}
-        echo $VERSION
-        echo $PRERELEASE
+        echo ${{ variables.VERSION }}
+        echo ${{ variables.PRERELEASE }}
     - name: Create release
       if: false
       uses: svenstaro/upload-release-action@2.5.0
