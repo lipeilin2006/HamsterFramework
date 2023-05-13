@@ -6,6 +6,8 @@
 
 <p align="center">
   <img src="https://github.com/lipeilin2006/HamsterFramework/blob/main/Hamster.jpeg" width="200" height="200" alt="icon"/>
+  
+  [![Test](https://github.com/lipeilin2006/HamsterFramework/actions/workflows/Test.yml/badge.svg)](https://github.com/lipeilin2006/HamsterFramework/actions/workflows/Test.yml)
 </p>
 
 <p align="center">
