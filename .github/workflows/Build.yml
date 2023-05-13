@@ -26,23 +26,23 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       
     - name: Publish_Win_x86
-      run: dotnet publish Hamster -p:Configuration=Release -p:PublishDir=bin\Release\net7.0\publish\win-x86\
+      run: dotnet publish Hamster -p:Configuration=Release -p:SelfContained=true -p:PublishDir=bin/Release/net7.0/publish/win-x86/ -p:RuntimeIdentifier=win-x86 
       
     - name: Publish_Win_x64
-      run: dotnet publish Hamster -c Release --os win-x64
+      run: dotnet publish Hamster -p:Configuration=Release -p:SelfContained=true -p:PublishDir=bin/Release/net7.0/publish/win-x64/ -p:RuntimeIdentifier=win-x64
       
     - name: Publish_Win_arm
-      run: dotnet publish Hamster
+      run: dotnet publish Hamster -p:Configuration=Release -p:SelfContained=true -p:PublishDir=bin/Release/net7.0/publish/win-arm/ -p:RuntimeIdentifier=win-arm
       
     - name: Publish_Win_arm64
-      run: dotnet publish Hamster
+      run: dotnet publish Hamster -p:Configuration=Release -p:SelfContained=true -p:PublishDir=bin/Release/net7.0/publish/win-arm64/ -p:RuntimeIdentifier=win-arm64
       
     - name: Publish_Linux_x64
-      run: dotnet publish Hamster
+      run: dotnet publish Hamster -p:Configuration=Release -p:SelfContained=true -p:PublishDir=bin/Release/net7.0/publish/linux-x64/ -p:RuntimeIdentifier=linux-x64
       
     - name: Publish_Linux_arm
-      run: dotnet publish Hamster
+      run: dotnet publish Hamster -p:Configuration=Release -p:SelfContained=true -p:PublishDir=bin/Release/net7.0/publish/linux-arm/ -p:RuntimeIdentifier=linux-arm
       
     - name: Publish_Linux_arm64
-      run: dotnet publish Hamster
+      run: dotnet publish Hamster -p:Configuration=Release -p:SelfContained=true -p:PublishDir=bin/Release/net7.0/publish/linux-arm64/ -p:RuntimeIdentifier=linux-arm64
     
