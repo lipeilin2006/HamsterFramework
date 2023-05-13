@@ -86,7 +86,7 @@ jobs:
         echo ${{ vars.PUBLISH }}
         echo ${{ vars.BODY }}
     - name: Create release
-      if: $vars.PUBLISH
+      if: ${{ vars.PUBLISH }}
       uses: svenstaro/upload-release-action@2.5.0
       with:
         repo_token: ${{ secrets.TOKEN }}
