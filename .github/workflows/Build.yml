@@ -34,9 +34,7 @@ jobs:
     
     - name: Publish_Win_x86
       run: |
-        ls
         cd ./Hamster
-        ls
         dotnet publish -p:PublishProfile=win-x86
         zip -qr win-x86.zip bin/Release/net7.0/publish/win-x86/
       
@@ -86,7 +84,7 @@ jobs:
         echo ${{ vars.PUBLISH }}
         echo ${{ vars.BODY }}
     - name: Create release
-      if: ${{ vars.PUBLISH }}
+      if: ${{ vars.PUBLISH }}=="true"
       uses: svenstaro/upload-release-action@2.5.0
       with:
         repo_token: ${{ secrets.TOKEN }}
@@ -94,6 +92,6 @@ jobs:
         tag: ${{ vars.VERSION }}
         release_name: ${{ vars.VERSION }}
         overwrite: false
-        file_glob: false
-        prerelease: ${{ vars.PRERELEASE }}
+        file_glob: true
+        prerelease: ${{ vars.PRERELEASE }}=="true"
         body: ${{ vars.BODY }}
