@@ -84,7 +84,7 @@ jobs:
         echo ${{ vars.PUBLISH }}
         echo ${{ vars.BODY }}
     - name: Create release
-      if: ${{ vars.PUBLISH == "true" }}
+      if: ${{ vars.PUBLISH == 'true' }}
       uses: svenstaro/upload-release-action@2.5.0
       with:
         repo_token: ${{ secrets.TOKEN }}
@@ -93,5 +93,5 @@ jobs:
         release_name: ${{ vars.VERSION }}
         overwrite: false
         file_glob: true
-        prerelease: ${{ vars.PRERELEASE == "true" }}
+        prerelease: ${{ vars.PRERELEASE == 'true' }}
         body: ${{ vars.BODY }}
