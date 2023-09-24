@@ -28,7 +28,7 @@ server.cs和config.yaml必须放在网站根目录中。
 server.cs（注意：这是一个脚本，无需编译。）
 ```CSharp
 server.Route("^/$", (HttpListenerRequest request, MatchCollection matches) => { return new Text.Plane("Hello Hamster"); });
-server.RouteOther((HttpListenerRequest request, MatchCollection matches) => { return new Text.Plane("404",404); });
+server.RouteOther((HttpListenerRequest request) => { return new Text.Plane("404",404); });
 ```
 #### 调试模式运行（无需初始化）：
 Windows:
