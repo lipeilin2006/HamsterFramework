@@ -5,7 +5,7 @@
 </div>
 
 <p align="center">
-  <img src="https://github.com/lipeilin2006/HamsterFramework/blob/main/Hamster.png" width="200" height="200" alt="icon"/>
+  <img src="https://github.com/lipeilin2006/HamsterFramework/blob/main/Hamster.png" height="200" alt="icon"/>
 </p>
 
 <p align="center">
