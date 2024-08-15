@@ -1,12 +1,13 @@
 ﻿using System.Net;
 using System.Text;
 
-namespace Hamster.Core.Routing
+namespace Hamster.Utils.Routing
 {
-    public class Text : RouteAction
+    public class Text : IResponse
     {
         public string text = "";
         public string contentType = "";
+        public int statusCode = 200;
         public Text(string text)
         {
             this.text = text;
@@ -24,7 +25,7 @@ namespace Hamster.Core.Routing
             this.statusCode = statusCode;
         }
 
-        public override async Task Run(HttpListenerContext context)
+        public async Task Produce(HttpListenerContext context)
         {
             context.Response.AddHeader("Content-type", contentType);
             context.Response.ContentEncoding = Encoding.UTF8;

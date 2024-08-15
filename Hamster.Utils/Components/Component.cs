@@ -1,4 +1,4 @@
-﻿namespace Hamster.Core.Components
+﻿namespace Hamster.Utils.Components
 {
 	public abstract class Component : IDisposable
 	{

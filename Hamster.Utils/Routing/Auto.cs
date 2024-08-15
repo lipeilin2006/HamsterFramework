@@ -1,16 +1,16 @@
 ﻿using MimeMapping;
 using System.Net;
 
-namespace Hamster.Core.Routing
+namespace Hamster.Utils.Routing
 {
-    public class Auto : RouteAction
+    public class Auto : IResponse
     {
         public string filename;
         public Auto(string filename)
         {
             this.filename = filename;
         }
-        public override async Task Run(HttpListenerContext context)
+        public async Task Produce(HttpListenerContext context)
         {
             context.Response.ContentType = MimeUtility.GetMimeMapping(filename);
             if (File.Exists(filename))

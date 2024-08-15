@@ -1,8 +1,9 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using Hamster.Core.Components;
-using Hamster.Core.Routing;
+using Hamster.Utils;
+using Hamster.Utils.Components;
+using Hamster.Utils.Routing;
 
 namespace Hamster.Core
 {
@@ -14,9 +15,9 @@ namespace Hamster.Core
 		private Thread? listenLoop;
 		private bool isExit = false;
 
-		private List<string> routes = new List<string>();
-		private List<Func<HttpListenerRequest, MatchCollection, RouteAction>> funcs = new List<Func<HttpListenerRequest, MatchCollection, RouteAction>>();
-		private Func<HttpListenerRequest, RouteAction>? other;
+		public List<string> routes = new List<string>();
+		public List<Func<HttpListenerRequest, MatchCollection, IResponse>> funcs = new List<Func<HttpListenerRequest, MatchCollection, IResponse>>();
+		private Func<HttpListenerRequest, IResponse>? other;
 
 		private List<Component> components = new List<Component>();
 		public HttpServer() : this("*", false) { }
@@ -76,7 +77,7 @@ namespace Hamster.Core
 		/// </summary>
 		/// <param name="path"></param>
 		/// <param name="func"></param>
-		public void Route(string path, Func<HttpListenerRequest, MatchCollection, RouteAction> func)
+		public void Route(string path, Func<HttpListenerRequest, MatchCollection, IResponse> func)
 		{
 			routes.Add(path);
 			funcs.Add(func);
@@ -85,7 +86,7 @@ namespace Hamster.Core
 		/// Add a route which will be executed when routes not match.
 		/// </summary>
 		/// <param name="func"></param>
-		public void RouteOther(Func<HttpListenerRequest, RouteAction> func)
+		public void RouteOther(Func<HttpListenerRequest, IResponse> func)
 		{
 			other = func;
 		}
@@ -101,7 +102,7 @@ namespace Hamster.Core
 					if (listener != null)
 					{
 						HttpListenerContext context = await listener.GetContextAsync();
-						Logger.LogDebug("[" + context.Request.RemoteEndPoint + "]" + context.Request.Url.ToString());
+						Logger.LogDebug($"[{context.Request.RemoteEndPoint}]{context.Request.Url.ToString()}");
 						bool isMatch = false;
 						for (int ii = 0; ii < routes.Count; ii++)
 						{
@@ -109,13 +110,20 @@ namespace Hamster.Core
 							if (matches.Count > 0)
 							{
 								isMatch = true;
-								await funcs[ii](context.Request, matches).Run(context);
+								await funcs[ii](context.Request, matches).Produce(context);
 								break;
 							}
 						}
 						if (!isMatch)
 						{
-							await other(context.Request).Run(context);
+							if (other != null)
+							{
+								await other(context.Request).Produce(context);
+							}
+							else
+							{
+								await new Text.Plane("404", 404).Produce(context);
+                            }
 						}
 					}
 				}

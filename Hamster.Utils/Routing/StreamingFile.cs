@@ -1,11 +1,12 @@
 ﻿using System.Net;
 
-namespace Hamster.Core.Routing
+namespace Hamster.Utils.Routing
 {
-    public class StreamingFile : RouteAction
+    public class StreamingFile : IResponse
     {
         public string contentType = "";
         public byte[] contents;
+        public int statusCode = 200;
         public StreamingFile(string path)
         {
             contents = File.ReadAllBytes(path);
@@ -22,7 +23,7 @@ namespace Hamster.Core.Routing
             contents = File.ReadAllBytes(path);
         }
 
-        public override async Task Run(HttpListenerContext context)
+        public async Task Produce(HttpListenerContext context)
         {
             context.Response.AddHeader("Content-type", contentType);
             context.Response.StatusCode = statusCode;

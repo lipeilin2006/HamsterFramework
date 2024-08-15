@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Timers;
 
-namespace Hamster.Core.Components
+namespace Hamster.Utils.Components
 {
 	public class Scheduler : Component
 	{

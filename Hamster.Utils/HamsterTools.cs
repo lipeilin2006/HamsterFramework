@@ -1,6 +1,6 @@
 ﻿using MimeMapping;
 
-namespace Hamster.Core
+namespace Hamster.Utils
 {
 	public class HamsterTools
 	{

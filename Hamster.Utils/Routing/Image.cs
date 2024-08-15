@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-namespace Hamster.Core.Routing
+namespace Hamster.Utils.Routing
 {
-    public class Image : RouteAction
+    public class Image : IResponse
     {
         private string contentType = "";
         private byte[]? contents;
@@ -17,10 +17,10 @@ namespace Hamster.Core.Routing
             this.contentType = contentType;
             this.stream = stream;
         }
-        public override async Task Run(HttpListenerContext context)
+        public async Task Produce(HttpListenerContext context)
         {
             context.Response.AddHeader("Content-type", contentType);
-            context.Response.StatusCode = statusCode;
+            context.Response.StatusCode = 200;
             if (stream != null)
             {
                 await stream.CopyToAsync(context.Response.OutputStream);
