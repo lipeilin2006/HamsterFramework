@@ -44,12 +44,6 @@ jobs:
         dotnet publish -p:PublishProfile=win-x64
         zip -qr win-x64.zip bin/Release/net8.0/publish/win-x64/
       
-    - name: Publish_Win_arm
-      run: |
-       cd ./Hamster
-       dotnet publish -p:PublishProfile=win-arm
-       zip -qr win-arm.zip bin/Release/net8.0/publish/win-arm/
-      
     - name: Publish_Win_arm64
       run: |
         cd ./Hamster
@@ -61,12 +55,6 @@ jobs:
         cd ./Hamster
         dotnet publish -p:PublishProfile=linux-x64
         zip -qr linux-x64.zip bin/Release/net8.0/publish/linux-x64/
-      
-    - name: Publish_Linux_arm
-      run: |
-        cd ./Hamster
-        dotnet publish -p:PublishProfile=linux-arm
-        zip -qr linux-arm.zip bin/Release/net8.0/publish/linux-arm/
       
     - name: Publish_Linux_arm64
       run: |
