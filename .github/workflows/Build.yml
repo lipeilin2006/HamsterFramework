@@ -73,7 +73,7 @@ jobs:
         echo ${{ vars.BODY }}
     - name: Create release
       if: ${{ vars.PUBLISH == 'true' }}
-      uses: svenstaro/upload-release-action@2.5.0
+      uses: svenstaro/upload-release-action@2.9.0
       with:
         repo_token: ${{ secrets.TOKEN }}
         file:  ./Hamster/*.zip
