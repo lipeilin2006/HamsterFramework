@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Hamster.Generator\Hamster.Generator.csproj" 
+					  OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false"/>
     <ProjectReference Include="..\Hamster.Utils\Hamster.Utils.csproj" />
   </ItemGroup>
 
